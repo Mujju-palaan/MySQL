@@ -138,17 +138,6 @@ CREATE TABLE LOAN (
     FOREIGN KEY (created_employee_id) REFERENCES EMPLOYEE(employee_id)
 );
 -- select * from loan;
-
-
-SELECT 
-    TABLE_NAME, 
-    CONSTRAINT_NAME, 
-    REFERENCED_TABLE_NAME
-FROM 
-    INFORMATION_SCHEMA.KEY_COLUMN_USAGE
-WHERE 
-    TABLE_SCHEMA = 'bank'
-    AND TABLE_NAME = 'loan';
     
 --  Question 10: Define the LOAN_INSTALMENTS Table
 
