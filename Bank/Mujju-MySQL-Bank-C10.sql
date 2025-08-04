@@ -24,17 +24,16 @@ Design a database stored procedure to update employee salaries for multiple empl
 5)Stored Procedure for Customer Data Grid
 
 Create a database stored procedure to retrieve comprehensive customer details, including phone_number and email, for displaying in the Customer Management screen's data grid. The procedure should also calculate and return the customer's cash balance, credit balance, and loan balance. Implement pagination for the UI grid using temporary tables, with the UI grid page number passed as an input parameter.
-
+--- Done
 
 6)Stored Procedure for Loan Payments
 
 Create a database stored procedure to fetch all loan instalments for a specific customer by accepting customer_id as an input parameter. The procedure should join the CUSTOMER, LOAN, and LOAN_INSTALMENTS tables to retrieve relevant details, including loan_id, instalment_amount, due_date, paid_date, and loan_start_date.
-
+--- Done
 
 7)Stored Procedure for Banking Transactions
-
 Develop an SQL stored procedure to process banking debit and credit transactions. The procedure should execute the following tasks: log the transaction in the transaction table, update the account balance, and document the changes in the account history. Additionally, if the transaction pertains to a credit card purchase, ensure the CARD table is updated accordingly.
-
+--- Done
 
 8)Stored Procedure for Loan Payment
 
