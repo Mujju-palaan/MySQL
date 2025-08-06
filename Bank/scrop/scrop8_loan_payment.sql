@@ -84,7 +84,22 @@ BEGIN
         ,d_transaction_id
 	;
     
-    -- If the payment clears the loan in full, update the loan's end date in the LOAN table. 
+    -- If the payment clears the loan in full, update the loan's end date in the LOAN table.
+    -- (select * from loan)
+    select loan_amount into d_loan_amount
+    from loan
+    where account_id = p_account_id; 
+    
+    IF p_amount = d_loan_amount then
+		UPDATE loan 
+        set loan_end_date = current_date
+        where account_id = p_account_id; 
+        RAISE NOTICE 'Loan fully paid and end date updated, 
+			LOAN AMOUNT: %, PAID AMOUNT: %', d_loan_amount, p_amount ;
+	else
+		RAISE EXCEPTION 'Total loan instalments not paid, 
+			LOAN AMOUNT: %, PAID AMOUNT: %', d_loan_amount, p_amount ;
+    END IF;
     
 END $
 DELIMITER ;
