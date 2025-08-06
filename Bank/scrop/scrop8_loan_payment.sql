@@ -5,28 +5,29 @@
 -- If the payment clears the loan in full, update the loan's end date in the LOAN table. 
 -- To accommodate payments covering multiple months, accept instalment IDs as input and distribute the funds 
 -- across the specified monthly instalment buckets accordingly.
-
+-- CALL scrop8_loan_payment(1000.00, 'debit', 'loan payment', 5, 'completed', 'EMI payment');
 DELIMITER $$
-
 create procedure scrop8_loan_payment (
-	IN p_amount decimal
-    ,IN p_transaction_type varchar		-- ('debit', 'credit')
-    ,IN p_payment_mode varchar			-- ('ATM', 'cash deposit', 'loan payment', 'fund transfer', 
-										-- 'debit card', 'fees', 'credit card')
+	IN p_amount decimal(10,2)
+    ,IN p_transaction_type varchar(50)		-- ('debit', 'credit')
+    ,IN p_payment_mode varchar(50)			-- ('ATM', 'cash deposit', 'loan payment', 'fund transfer', 
+											-- 'debit card', 'fees', 'credit card')
     ,IN p_account_id int
-    ,IN p_transaction_status varchar	-- ('processing', 'declined', 'completed')
-    ,IN p_description varchar
+    ,IN p_transaction_status varchar(50)	-- ('processing', 'declined', 'completed')
+    ,IN p_description varchar(50)
 )
 BEGIN
 	DECLARE d_transaction_id int;
-    DECLARE d_balance_before decimal;
-    DECLARE balance_after decimal;
+    DECLARE d_balance_before DECIMAL(10,2);
+    DECLARE d_balance_after DECIMAL(10,2);
+    DECLARE d_instalment_id INT;
+    DECLARE d_loan_amount DECIMAL(10,2);
     
 	-- log the payment in the transaction table (select * from transaction)
-    insert into tranaction 
+    insert into transaction 
 		(amount, transaction_type, payment_mode, account_id, transaction_status, description)
 	select
-		(p_amount, p_transaction_type, p_payment_mode, p_account_id, p_transaction_status, p_description)
+		p_amount, p_transaction_type, p_payment_mode, p_account_id, p_transaction_status, p_description
         ;
     
     -- set d_transaction_id
@@ -36,13 +37,14 @@ BEGIN
     insert into loan_instalments 
 		(loan_id, instalment_amount, due_date, paid_status)
 	select
-		a.loan_id
+		loan_id
         ,p_amount
-        ,a.due_date
-	from loan_instalments a
-    inner join loan_payment b using(instalment_id)
-    inner join transaction c using(transaction_id)
-    where c.transaction_id = d_transaction_id
+        ,current_date
+        ,true
+	from transaction
+    inner join account using(account_id)
+    inner join loan using(customer_id)
+	where transaction_id = d_transaction_id
     ;
     
 	-- set d_transaction_id
@@ -50,7 +52,7 @@ BEGIN
     
     -- record the details in the loan payment table (select * from loan_payment)
     insert into loan_payment(instalment_id, transaction_id)
-    values(d_instalment_id, d_transaction_id);
+    select d_instalment_id, d_transaction_id;
     
     -- d_balance_before
     select balance into d_balance_before
@@ -94,12 +96,20 @@ BEGIN
 		UPDATE loan 
         set loan_end_date = current_date
         where account_id = p_account_id; 
-        RAISE NOTICE 'Loan fully paid and end date updated, 
-			LOAN AMOUNT: %, PAID AMOUNT: %', d_loan_amount, p_amount ;
-	else
-		RAISE EXCEPTION 'Total loan instalments not paid, 
-			LOAN AMOUNT: %, PAID AMOUNT: %', d_loan_amount, p_amount ;
-    END IF;
+        -- RAISE NOTICE 'Loan fully paid and end date updated, 
+-- 			LOAN AMOUNT: %, PAID AMOUNT: %', d_loan_amount, p_amount ;
+-- 	else
+-- 		RAISE EXCEPTION 'Total loan instalments not paid, 
+-- 			LOAN AMOUNT: %, PAID AMOUNT: %', d_loan_amount, p_amount ;
+--     END IF;
+
+	-- MySQL alternative to RAISE NOTICE: Use SELECT
+		SELECT CONCAT('Loan fully paid and end date updated. LOAN AMOUNT: ', d_loan_amount, ', PAID AMOUNT: ', p_amount) AS message;
+	ELSE
+		SELECT CONCAT('Total loan instalments not paid. LOAN AMOUNT: ', d_loan_amount, ', PAID AMOUNT: ', p_amount) AS message;
+	END IF;
     
-END $
+END $$
 DELIMITER ;
+
+

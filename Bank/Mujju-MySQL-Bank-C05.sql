@@ -131,11 +131,13 @@ CREATE TABLE LOAN (
     interest_rate DECIMAL(5, 2) NOT NULL,
     loan_start_date DATE NOT NULL,
     loan_end_date DATE NOT NULL,
+    customer_id INT NOT NULL,
     account_id INT NOT NULL,
     created_employee_id INT NOT NULL,
 	created_at datetime DEFAULT current_timestamp NOT NULL,
     FOREIGN KEY (account_id) REFERENCES ACCOUNT(account_id),
-    FOREIGN KEY (created_employee_id) REFERENCES EMPLOYEE(employee_id)
+    FOREIGN KEY (created_employee_id) REFERENCES EMPLOYEE(employee_id),
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
 );
 -- select * from loan;
     
