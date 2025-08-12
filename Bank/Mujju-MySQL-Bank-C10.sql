@@ -38,7 +38,7 @@ Develop an SQL stored procedure to process banking debit and credit transactions
 8)Stored Procedure for Loan Payment
 
 Create a stored procedure to manage loan payments. The procedure should execute the following tasks: log the payment in the transaction table, record the details in the loan payment table, update the loan instalment records, adjust the account balance, and document the changes in the account history. If the payment clears the loan in full, update the loan's end date in the LOAN table. To accommodate payments covering multiple months, accept instalment IDs as input and distribute the funds across the specified monthly instalment buckets accordingly.
-
+--- Done
 
 9)Stored Procedure for Fund Transfer
 
