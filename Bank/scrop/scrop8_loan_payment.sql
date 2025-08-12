@@ -5,7 +5,7 @@
 -- If the payment clears the loan in full, update the loan's end date in the LOAN table. 
 -- To accommodate payments covering multiple months, accept instalment IDs as input and distribute the funds 
 -- across the specified monthly instalment buckets accordingly.
--- CALL scrop8_loan_payment(1000.00, 'debit', 'loan payment', 5, 'completed', 'EMI payment');
+
 DELIMITER $$
 create procedure scrop8_loan_payment (
 	IN p_amount decimal(10,2)
@@ -112,4 +112,4 @@ BEGIN
 END $$
 DELIMITER ;
 
-
+-- CALL scrop8_loan_payment(1000.00, 'debit', 'loan payment', 5, 'completed', 'EMI payment');
