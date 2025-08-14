@@ -43,12 +43,12 @@ Create a stored procedure to manage loan payments. The procedure should execute 
 9)Stored Procedure for Fund Transfer
 
 Create a stored procedure to manage fund transfer details. The procedure should perform the following operations: insert a record into the fund transfer table, log the transaction in the transaction table, update the account balance, and record the changes in the account history.
-
+--- Done
 
 10)Stored Procedure to Reverse a Fund Transfer
 
 Develop a stored procedure to handle fund transfer refunds. The procedure should execute the following actions. update the fund transfer record, log the refund in the transaction table, adjust the account balance, and document the changes in the account history.
-
+--- Done
 
 11)Stored Procedure for Customer Login
 Create a database stored procedure to validate user login, fetch customer details, and update the last_login_datetime. The procedure should return an error if the login ID is not found or the password does not match. Ensure the stored encrypted password is decrypted during the validation process.
