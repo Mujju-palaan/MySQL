@@ -58,17 +58,17 @@ View Tasks:
 1)View for Customer Information
 
 Create a db view that retrieves the first_name, last_name, email, and phone_number of all customers along with their corresponding city names.
-
+--- Done
 
 2)View for Account Details
 
 Create a database view that displays account details, customer_id, first_name, last_name, account_id, account_type, and balance. Include the city name and country name using appropriate joins.
-
+--- Done
 
 3)View for Loan Details
 
 Create a SQL view to summarize loan details, including: loan_id, customer_id, first_name, last_name, loan_amount, interest_rate, loan_start_date, and loan_end_date. Include the total number of instalments and the sum of all instalment amounts for each loan.
-
+--- Done
 
 Function Tasks:
 1)Function to Calculate Total Loan Balance per Customer
