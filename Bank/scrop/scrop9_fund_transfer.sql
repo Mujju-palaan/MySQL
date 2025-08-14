@@ -19,9 +19,7 @@ BEGIN
     declare d_blalance_before decimal(10,2);
     declare d_blalance_after decimal(10,2);
     
-    
-    
-	-- insert a record into the fund transfer table, (select * from fund_transfer)
+    	-- insert a record into the fund transfer table, (select * from fund_transfer)
     insert into fund_transfer
 		(beneficiary_id, transaction_id, refund_transaction_id, transfer_status)
 	values
@@ -58,9 +56,11 @@ BEGIN
     where account_id = d_account_id;
     
     -- record the changes in the account history (select * from account_history)
-    insert into account_histor
-		(account_id, blalance_before, balance_after, transaction_id)
+    insert into account_history
+		(account_id, balance_before, balance_after, transaction_id)
     values
 		(d_account_id, d_blalance_before, d_blalance_after, p_transaction_id);
 END $$
 DELIMITER ;
+
+    -- call scrop9_fund_transfer(2, 2, 2, 'completed');
