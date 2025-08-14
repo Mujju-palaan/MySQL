@@ -74,17 +74,18 @@ Function Tasks:
 1)Function to Calculate Total Loan Balance per Customer
 
 Write a database function to calculate the total outstanding loan balance for a customer based on their loans. Use SQL variables within the function to implement this logic.
-
+--- Done
 
 2)Function to Calculate Interest on Loans
 
 Write a database function that calculates the monthly interest to be added to the principal amount of a loan each month, based on the loan_amount, interest_rate, and number_of_monthly_instalments.
-
+--- Done
 
 3)Function to display loan details
 
 Write a database function that retrieves customer loan information based on the screen 
 design provided at the bottom of this webpage.
+--- Done
 
 
 Trigger Task:
