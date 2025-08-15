@@ -7,7 +7,7 @@ create table if not exists department(
     ,department_name varchar(50) unique not null
     ,loaction varchar(50) not null
     ,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
 
@@ -22,7 +22,7 @@ create table if not exists doctor(
     ,active_flag boolean default 0 not null
     ,login_id varchar(255) not null
     ,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Question 3: Define the DOCTOR_DEPARTMENT Table
@@ -44,7 +44,7 @@ create table if not exists nurse(
     ,active_flag boolean not null
     ,login_id varchar(255) unique not null
     ,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Question 5: Define the ROOM Table with Relationships
@@ -54,7 +54,7 @@ create table if not exists room(
     ,room_type varchar(50) not null check (room_type in ( "General", "ICU", "Private"))
     ,daily_rate decimal(10,2) not null
     ,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Question 6: Create the PATIENT Table
@@ -66,7 +66,7 @@ create table if not exists patient(
     ,email varchar(50) unique not null
     ,phone_number varchar(50) unique not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Question 7: Create the PATIENT_ADMISSION Table
@@ -78,7 +78,7 @@ create table if not exists PATIENT_ADMISSION(
     ,treatment_end_date date 
     ,patient_id int not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(patient_id) references patient(patient_id)
 );
 
@@ -92,7 +92,7 @@ create table if not exists APPOINTMENT(
     ,incharge_nurse_id int not null
     ,admission_id int not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(doctor_id) references doctor(doctor_id)
     ,foreign key(room_id) references room(room_id)
     ,foreign key(incharge_nurse_id) references nurse(nurse_id)
@@ -108,7 +108,7 @@ create table if not exists ROOM_ADMIT(
     ,incharge_nurse_id int not null
     ,admission_id int not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(room_id) references room(room_id)
     ,foreign key(incharge_nurse_id) references nurse(nurse_id)
     ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
@@ -121,7 +121,7 @@ create table if not exists MEDICATION(
     ,medication_type varchar(50) not null
     ,dosage varchar(50) not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- Question 11: Create the PRESCRIPTION Table
@@ -137,7 +137,7 @@ create table if not exists PRESCRIPTION(
     ,evening_flag boolean not null
     ,admission_id int not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(medication_id) references medication(medication_id)
     ,foreign key(doctor_id) references doctor(doctor_id)
     ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
@@ -154,7 +154,7 @@ create table if not exists BILLING(
     ,balance_amount decimal(10,2) not null
     ,admission_id int not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
 );
 
@@ -166,52 +166,70 @@ create table if not exists PAYMENT(
     ,amount_paid decimal(10,2) not null check(amount_paid > 0)
     ,payment_date datetime default current_timestamp not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(billing_id) references billing(billing_id)
     ,foreign key(patient_id) references patient(patient_id)
 );
 
 -- Question 14: Create the USER_LOGIN Table
 create table if not exists USER_LOGIN(
-
+	user_id int auto_increment primary key
+    ,login_id varchar(50) not null
+    ,password varchar(255) not null
+    ,active_flag char(1) not null check(active_flag in (1,0))
+    ,last_login_datetime datetime default current_timestamp
+    ,active boolean default true not null
 	,created_at datetime default current_timestamp
-    ,updated_at timestamp default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
+
 -- Question 15: Create the AUDIT_LOG Table
--- Define an AUDIT_LOG table to track changes in the hospital management system:
-
--- log_id as a primary key with auto-increment functionality.
--- log_date as a date field, not null.
--- action as a string to describe the action performed.
--- user_id as a foreign key referencing the DOCTOR or NURSE table.
-
+create table if not exists AUDIT_LOG(
+	log_id int auto_increment primary key
+    ,log_date  datetime default current_timestamp not null
+    ,action varchar(50) not null
+    ,user_type ENUM('doctor', 'nurse') NOT NULL 
+    ,user_id int not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
+    ,foreign key(user_id) references doctor(doctor_id)
+    ,foreign key(user_id) references nurse(nurse_id)
+);
 
 -- Question 16: Add a Column to the DOCTOR Table
 -- Write a SQL statement to add a phone_number column of type VARCHAR(15) to the DOCTOR table.
 
+
 -- Question 17: Alter a Column in the PATIENT Table
 -- Write a SQL statement to alter the email column in the PATIENT table, increasing its length to 300 characters.
+
 
 -- Question 18: Drop a Column from the USER_LOGIN Table
 -- Write a SQL statement to drop the active column from the USER_LOGIN table.
 
+
 -- Question 19: Rename the USER_LOGIN Table
 -- Write a SQL statement to rename the USER_LOGIN table to USER.
+
 
 -- Question 20: Drop the USER Table
 -- Write a SQL statement to drop the USER table.
 
+
 -- Question 21: Add a Primary Key
 -- Set up a composite primary key using doctor_id and department_id on DOCTOR_DEPARTMENT table.
 
+
 -- Question 22: Add a Foreign Key to the PRESCRIPTION Table
 -- Add a foreign key in the PRESCRIPTION table to reference the DOCTOR table.
+
 
 -- Question 23: Add a CHECK Constraint on the TREATMENT Table
 -- Write a SQL statement to add a CHECK constraint to the TREATMENT table ensuring that the treatment_date is not in the future.
 
 -- Question 24: Add a UNIQUE Constraint on the DEPARTMENT Table
 -- Write a SQL statement to add a UNIQUE constraint to the DEPARTMENT table ensuring that the department_name is not repeated.
+
 
 -- Question 25: Add a DEFAULT Constraint on the AUDIT_LOG Table
 -- Write a SQL statement to add a DEFAULT constraint to the AUDIT_LOG table to set the default value of log_date to system date.
@@ -221,8 +239,11 @@ create table if not exists USER_LOGIN(
 
 -- Add an index on the last_name column in the PATIENT table.
 -- Add an index on the specialization column in the DOCTOR table.
+
+
 -- Question 27: Drop an Index from the DOCTOR Table
 -- Write a SQL statement to drop the index on the specialization column in the DOCTOR table.
+
 
 -- Question 28: Enforce UNIQUE constraints on all applicable tables.
 -- Apply UNIQUE constraints to columns across the entire database wherever duplicate data is not permitted.
