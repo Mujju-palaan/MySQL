@@ -1,167 +1,182 @@
--- Question 1: Create the DEPARTMENT Table with a Foreign Key
--- Define a DEPARTMENT table:
+create database Hospital;
+use hospital;
 
--- department_id as a primary key with auto-increment functionality.
--- department_name as a string of maximum length 255 characters, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
+-- Question 1: Create the DEPARTMENT Table with a Foreign Key
+create table if not exists department(
+	department_id int auto_increment primary key
+    ,department_name varchar(50) unique not null
+    ,loaction varchar(50) not null
+    ,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 
 
 -- Question 2: Create the DOCTOR Table with Constraints
--- Create a DOCTOR table with the following specifications:
-
--- doctor_id as a primary key with auto-increment functionality.
--- first_name as a string with a maximum length of 255 characters, not null.
--- last_name as a string with a maximum length of 255 characters, not null.
--- specialization as a string with a maximum length of 255 characters, not null.
--- email as a unique string, not null.
--- per_visit_cost as a decimal (10, 2), not null.
--- active as a boolean, default to yes, not null.
--- login_id can use alpha numeric login id or email as login id, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
+create table if not exists doctor(
+	doctor_id int auto_increment primary key
+    ,first_name varchar(255) not null
+    ,last_name varchar(255) not null
+    ,specialization varchar(255) not null
+    ,email varchar(255) unique not null
+    ,per_visit_cost decimal(10,2) not null
+    ,active_flag boolean default 0 not null
+    ,login_id varchar(255) not null
+    ,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 
 -- Question 3: Define the DOCTOR_DEPARTMENT Table
--- Write the SQL statement to create a many-to-many relationship between doctors and departments. This will require the DOCTOR_DEPARTMENT table, which includes:
-
--- doctor_id as a foreign key referencing the DOCTOR table.
--- department_id as a foreign key referencing the DEPARTMENT table.
-
+create table if not exists DOCTOR_DEPARTMENT(
+	doctor_id int
+	,department_id int
+    ,foreign key(doctor_id) references doctor(doctor_id)
+    ,foreign key(department_id) references department(department_id)
+    ,primary key(doctor_id, department_id)
+);
 
 -- Question 4: Create the NURSE Table
--- Create a NURSE table:
-
--- nurse_id as a primary key with auto-increment functionality.
--- first_name as a string with a maximum length of 255 characters, not null.
--- last_name as a string with a maximum length of 255 characters, not null.
--- email as a unique string, not null.
--- hire_date as a date field, not null.
--- active as a boolean, not null.
--- login_id can use alpha numeric login id or email as login id, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
+create table if not exists nurse(
+	nurse_id int auto_increment primary key
+    ,first_name varchar(255) not null
+    ,last_name varchar(255) not null
+    ,email varchar(255) unique not null
+    ,hire_date date not null
+    ,active_flag boolean not null
+    ,login_id varchar(255) unique not null
+    ,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 
 -- Question 5: Define the ROOM Table with Relationships
--- Write the SQL statement to create a ROOM table that includes:
+create table if not exists room(
+	room_id int auto_increment primary key
+    ,room_number char(3) unique not null
+    ,room_type varchar(50) not null check (room_type in ( "General", "ICU", "Private"))
+    ,daily_rate decimal(10,2) not null
+    ,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 
--- room_id as a primary key with auto-increment functionality.
--- room_number as a string of maximum length 50 characters, not null.
--- room_type as a string (e.g., "General", "ICU", "Private"), not null.
--- daily_rate as a decimal (10, 2), not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
 -- Question 6: Create the PATIENT Table
--- Write a DDL SQL statement to create a PATIENT table with the following requirements:
-
--- patient_id as a primary key with auto-increment functionality.
--- first_name as a string of maximum length 255 characters, not null.
--- last_name as a string of maximum length 255 characters, not null.
--- date_of_birth as a date field, not null.
--- email as a unique string, not null.
--- phone_number as a string, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
+create table if not exists patient(
+	patient_id int auto_increment primary key
+    ,first_name varchar(50) not null
+    ,last_name varchar(50) not null
+    ,date_of_birth date not null
+    ,email varchar(50) unique not null
+    ,phone_number varchar(50) unique not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 
 -- Question 7: Create the PATIENT_ADMISSION Table
--- Define a PATIENT_ADMISSION table with the following specifications:
-
--- admission_id as a primary key with auto-increment functionality.
--- admit_type as a string, not null.
--- treatment_description as a string of maximum length 255 characters, not null.
--- treatment_start_date as a date field, not null.
--- treatment_end_date as a date field, null.
--- patient_id as a foreign key referencing the PATIENT table, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
--- Add a CHECK constraint to ensure the admit_type is In Patient Or Out Patient.
-
+create table if not exists PATIENT_ADMISSION(
+	admission_id int auto_increment primary key
+    ,admit_type varchar(50) not null check(admit_type in ('Patient','Out Patient'))
+    ,treatment_description varchar(50) not null
+    ,treatment_start_date date not null
+    ,treatment_end_date date 
+    ,patient_id int not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+    ,foreign key(patient_id) references patient(patient_id)
+);
 
 -- Question 8: Create the APPOINTMENT Table
--- Define an APPOINTMENT table with the following details:
-
--- appointment_id as a primary key with auto-increment functionality.
--- appointment_date as a date field, not null.
--- appointment_time as a time field, not null.
--- status as a string (e.g., "Scheduled", "Completed", "Cancelled"), not null.
--- doctor_id as a foreign key referencing the DOCTOR table, not null.
--- room_id as a foreign key referencing the ROOM table, not null.
--- incharge_nurse_id as a foreign key referencing the NURSE table.
--- admission_id as a foreign key referencing the PATIENT_ADMISSION table, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
+create table if not exists APPOINTMENT(
+	appointment_id int auto_increment primary key
+    ,appointment_date datetime default current_timestamp not null
+    ,status varchar(50) not null check(status in( "Scheduled", "Completed", "Cancelled"))
+    ,doctor_id int not null
+    ,room_id int not null
+    ,incharge_nurse_id int not null
+    ,admission_id int not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+    ,foreign key(doctor_id) references doctor(doctor_id)
+    ,foreign key(room_id) references room(room_id)
+    ,foreign key(incharge_nurse_id) references nurse(nurse_id)
+    ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
+);
 
 -- Question 9: Create the ROOM_ADMIT Table
--- Define an ROOM_ADMIT table with the following details:
-
--- admit_id as a primary key with auto-increment functionality.
--- start_date as a date field, not null.
--- end_date as a date field, null.
--- room_id as a foreign key referencing the ROOM table, not null.
--- incharge_nurse_id as a foreign key referencing the NURSE table.
--- admission_id as a foreign key referencing the PATIENT_ADMISSION table, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
+create table if not exists ROOM_ADMIT(
+	admit_id int auto_increment primary key
+    ,start_date datetime default current_timestamp
+    ,end_date datetime 
+    ,room_id int not null
+    ,incharge_nurse_id int not null
+    ,admission_id int not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+    ,foreign key(room_id) references room(room_id)
+    ,foreign key(incharge_nurse_id) references nurse(nurse_id)
+    ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
+);
 
 -- Question 10: Create the MEDICATION Table
--- Write a DDL SQL statement to create a MEDICATION table with the following details:
-
--- medication_id as the primary key with auto-increment functionality.
--- medication_name as a string of maximum length 255 characters, not null.
--- medication_type as a string of maximum length 100 characters, not null.
--- dosage as a string, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
+create table if not exists MEDICATION(
+	medication_id int auto_increment primary key
+    ,medication_name varchar(50) unique not null
+    ,medication_type varchar(50) not null
+    ,dosage varchar(50) not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 
 -- Question 11: Create the PRESCRIPTION Table
--- Write a DDL SQL statement to create a PRESCRIPTION table:
-
--- prescription_id as the primary key with auto-increment functionality.
--- prescription_date as a date field, not null.
--- medication_id as a foreign key referencing the MEDICATION table, not null.
--- doctor_id as a foreign key, not null.
--- start_date as a date field, not null.
--- end_date as a date field, not null.
--- morning_flag as a boolean, not null.
--- noon_flag as a boolean, not null.
--- evening_flag as a boolean, not null.
--- admission_id as a foreign key referencing the PATIENT_ADMISSION table, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
+create table if not exists PRESCRIPTION(
+	prescription_id int auto_increment primary key
+    ,prescription_date datetime default current_timestamp not null
+    ,medication_id int not null
+    ,doctor_id int not null
+    ,start_date date not null
+    ,end_date date not null
+    ,morning_flag boolean not null
+    ,noon_flag boolean not null
+    ,evening_flag boolean not null
+    ,admission_id int not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+    ,foreign key(medication_id) references medication(medication_id)
+    ,foreign key(doctor_id) references doctor(doctor_id)
+    ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
+);
 
 -- Question 12: Create the BILLING Table with Constraints
--- Write a DDL SQL statement to create a BILLING table:
-
--- billing_id as a primary key with auto-increment functionality.
--- bill_date as date, not null.
--- bill_type as string , not null.
--- description as string , null.
--- total_amount as a decimal (10, 2), not null.
--- balance_amount as a decimal (10, 2), not null.
--- admission_id as a foreign key referencing the PATIENT_ADMISSION table, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
--- Add a CHECK constraint to ensure the bill_type is Doctor Appointment or Medicine or Room Charge or Diagnostic or Food or Miscellaneous.
--- Add a CHECK constraint to ensure the total_amount is greater than 0.
-
+create table if not exists BILLING(
+	billing_id int auto_increment primary key
+    ,bill_date datetime default current_timestamp
+    ,bill_type varchar(50) not null 
+    check(bill_type in ('Appointment','Medicine','Room Charge','Diagnostic'))
+    ,description varchar(50) not null 
+    ,total_amount decimal(10,2) not null check(total_amount > 0)
+    ,balance_amount decimal(10,2) not null
+    ,admission_id int not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+    ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
+);
 
 -- Question 13: Create the PAYMENT Table with Constraints
--- Write a DDL SQL statement to create a PAYMENT table:
-
--- payment_id as a primary key with auto-increment functionality.
--- bill_id as a foreign key referencing the BILLING table, not null.
--- patient_id as a foreign key referencing the PATIENT table, not null.
--- amount_paid as a decimal (10, 2), not null.
--- payment_date as a datetime, not null.
--- Add a CHECK constraint to ensure the amount_paid is greater than 0.
-
+create table if not exists PAYMENT(
+	payment_id int auto_increment primary key 
+    ,billing_id int not null
+    ,patient_id int not null
+    ,amount_paid decimal(10,2) not null check(amount_paid > 0)
+    ,payment_date datetime default current_timestamp not null
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+    ,foreign key(billing_id) references billing(billing_id)
+    ,foreign key(patient_id) references patient(patient_id)
+);
 
 -- Question 14: Create the USER_LOGIN Table
--- Write a DDL SQL statement to create an USER_LOGIN table:
+create table if not exists USER_LOGIN(
 
--- user_id as a primary key with auto-increment functionality.
--- login_id can use alpha numeric login id or email as login id, not null.
--- password must encrypt the password before storing it in the database table, not null.
--- active_flag use numeric, 0 or 1, you can lock the customer login when required, not null.
--- last_login_datetime as a timestamp, last successfull login date for a given user.
--- active as boolean, default to yes, not null.
--- created_date as a timestamp field, default it to current timestamp, not null.
-
-
+	,created_at datetime default current_timestamp
+    ,updated_at timestamp default current_timestamp
+);
 -- Question 15: Create the AUDIT_LOG Table
 -- Define an AUDIT_LOG table to track changes in the hospital management system:
 
