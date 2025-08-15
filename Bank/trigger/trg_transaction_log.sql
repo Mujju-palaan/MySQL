@@ -2,7 +2,7 @@
 
 -- 1.Create a trigger on the TRANSACTION table that logs changes to the amount field into the 
 -- AUDIT_LOG table. The log should capture the transaction_id, old_amount, new_amount, log_date, 
--- and employee_id
+-- and employee_id (use bank)
 create table if not exists transaction_log(
 	transaction_id int
 	,old_amount numeric(10,2)
@@ -11,6 +11,7 @@ create table if not exists transaction_log(
 	,account_id int
 );
 
+-- drop trigger trg_transaction_log;
 DELIMITER $$
 create trigger trg_transaction_log
 after insert on transaction
@@ -33,3 +34,8 @@ BEGIN
 
 END $$
 DELIMITER ;
+
+-- select * from transaction;
+-- insert into transaction
+-- 	(amount, transaction_type, payment_mode, account_id, transaction_status, description)
+-- values(500, 'debit', 'ATM', 5, 'completed', 'cash withdrawl');
