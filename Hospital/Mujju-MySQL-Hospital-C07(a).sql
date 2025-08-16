@@ -1,50 +1,160 @@
 -- 1. SELECT Command
 -- Select all columns from the PATIENT table.
+select * from patient;
+
 -- Select the first_name, last_name, and email of all patients.
+Select first_name, last_name, email from patient;
+
 -- Select all specialization from the DOCTOR table.
+select specialization from doctor;
+
 -- Select the appointment_date and status from the APPOINTMENT table.
+Select appointment_date, status from  APPOINTMENT;
 
 -- 2. WHERE Command
 -- Select all patients where date_of_birth is before '1990-01-01'.
+select * from patient
+where date_of_birth < '1990-01-01';
+
 -- Select all doctors whose specialization is 'Cardiology'.
+select * from doctor
+where specialization = 'Cardiology';
+
 -- Select all appointments where status is 'Scheduled'.
+select * from appointment
+where status = 'Scheduled';
+
 -- Select all patient admits where treatment_start_date is after '2022-01-01'.
+select * from patient_admission
+where treatment_start_date > '2022-01-01';
 
 -- 3. ORDER BY Command
 -- Select all patients and order them by last_name in ascending order.
+Select * from patient
+order by last_name asc;
+
 -- Select all doctors and order them by first_name in descending order.
+Select * from doctor
+order by first_name desc;
+
 -- Select all appointments and order them by appointment_date in descending order.
+Select * from appointment
+order by appointment_date desc;
+
 -- Select all medications and order them by medication_name in ascending order.
+Select * from medication
+order by medication_name asc;
 
 -- 4. LIMIT Command
 -- Select the first 10 patients from the PATIENT table.
+Select * from patient
+limit 10;
+
 -- Select the first 5 doctors from the DOCTOR table.
+Select * from doctor
+limit 5;
+
 -- Select the top 3 appointments ordered by appointment_date.
+Select * from appointment
+order by appointment_date
+limit 3;
+
 -- Select the first 5 prescriptions from the PRESCRIPTION table.
+select * from prescription
+limit 5;
+
 
 -- 5. DISTINCT Command
 -- Select distinct specialization from the DOCTOR table.
+select distinct specialization from  DOCTOR;
+
 -- Select distinct status from the APPOINTMENT table.
+select distinct status  from  APPOINTMENT;
+
 -- Select distinct department_name from the DEPARTMENT table.
+select distinct department_name  from  DEPARTMENT;
+
 -- Select distinct last_name from the PATIENT table.
+select distinct last_name  from  PATIENT;
+
 
 -- 6. GROUP BY Command
 -- Group by specialization from the DOCTOR table and count the number of doctors per specialization.
+select specialization, count(*)
+from doctor
+group by specialization;
+
 -- Group by status in the APPOINTMENT table and count the number of appointments per status.
+select status, count(*)
+from APPOINTMENT
+group by status;
+
 -- Group by department_name from the ROOM table and calculate the number of rooms in each type.
+select department_name, count(room_type)
+from ROOM
+inner join department using(department_id)
+group by department_name;
+
 -- Group by medication_type in the MEDICATION table and calculate the total number of medications per type.
+select medication_type, count(*)
+from MEDICATION
+group by medication_type;
 
 -- 7. HAVING Command
 -- Select specialization from the DOCTOR table and group by it, having more than 2 doctors per specialization.
+select specialization, count(*)
+from DOCTOR
+group by specialization
+having count(*) > 2;
+
 -- Group by department_name and calculate the number of doctors in each department, having more than 3 doctors.
+select department_name, count(DOCTOR_id)
+from DOCTOR
+inner join doctor_department using(doctor_id)
+inner join department using(department_id)
+group by department_name
+having count(*) > 3;
+
 -- Group by status in the APPOINTMENT table and filter the groups having more than 5 appointments.
+select status, count(DOCTOR_id)
+from APPOINTMENT
+group by status
+having count(*) > 5;
+
 -- Group by medication_type and calculate the total medications, having more than 3 medications per type.
+select medication_type, count(*)
+from medication
+group by medication_type
+having count(*) > 3;
 
 -- 8. INNER JOIN Command
 -- Select all patients and their corresponding appointments using INNER JOIN between PATIENT and APPOINTMENT.
+select 
+	patient_id, first_name, last_name, appointment_date, status
+from patient
+inner join APPOINTMENT using(patient_id)
+;
+
 -- Select all treatments along with the corresponding doctor details using INNER JOIN between PATIENT_ADMIT and DOCTOR.
+
+
 -- Select all prescriptions along with the corresponding medication details using INNER JOIN between PRESCRIPTION and MEDICATION.
+select 
+	medication_name, medication_type, dosage, start_date, end_date, morning_flag, noon_flag, evening_flag
+from prescription
+inner join medication using(medication_id)
+;
+
 -- Select all doctors and the departments they belong to using INNER JOIN between DOCTOR and DOCTOR_DEPARTMENT.
+select 
+	doctor_id
+    ,concat(first_name, ' ', last_name) as doctor_name
+    ,department_name
+from doctor
+inner join DOCTOR_DEPARTMENT using(doctor_id)
+inner join DEPARTMENT using(DEPARTMENT_id)
+;
+
 
 -- 9. LEFT JOIN Command
 -- Select all doctors and their corresponding departments using LEFT JOIN, including doctors without any departments.
@@ -54,15 +164,74 @@
 
 -- 10. COUNT, SUM, AVG Command
 -- Count the total number of patients in the PATIENT table.
+select count(*)
+from patient;
+
 -- Count the number of distinct specialization in the DOCTOR table.
+select specialization, count(*)
+from DOCTOR
+group by specialization;
+
 -- Calculate the sum of total_amount in the BILLING table.
+select sum(total_amount)
+from billing;
+
 -- Calculate the average dosage for medications in the MEDICATION table.
+select avg(dosage)
+from MEDICATION;
 
 -- 11. CASE Command
--- Select all appointments and use a CASE statement to show 'Upcoming' if the appointment_date is after the current date, and 'Past' otherwise.
--- Select all patients and categorize them as 'Senior' if their date_of_birth is before '1950-01-01', otherwise 'Adult'.
--- Use a CASE statement to categorize patient admits as 'Recent' if the treatment_start_date is within the last year, otherwise 'Old'.
--- Use a CASE statement in the APPOINTMENT table to label appointments as 'Critical' if the patient has undergone multiple doctor visits.
+-- Select all appointments and use a CASE statement to show 'Upcoming' 
+-- if the appointment_date is after the current date, and 'Past' otherwise.
+select 
+	appointment_id, 
+    appointment_date,
+    case 
+		when appointment_date > current_date() then 'Upcoming'
+        else 'Past'
+	end as status
+from appointment;
+
+-- Select all patients and categorize them as 'Senior' if their date_of_birth is before date_of_birth, 
+-- otherwise 'Adult'.
+select 
+	patient_id
+    ,concat(first_name, ' ', last_name) as patient_name
+    ,case
+		when date_of_birth < date_of_birth then 'Senior'
+		else 'Adult'
+	end as categorize
+from patient;
+
+-- Use a CASE statement to categorize patient admits as 'Recent' 
+-- if the treatment_start_date is within the last year, otherwise 'Old'.
+select 
+	patient_id
+    ,case
+		when treatment_start_date > DATE_sub(current_date(), INTERVAL 12 MONTH)  then 'Recent' 
+        else 'old'
+	end as categorize
+from patient_admission;
+
+-- Use a CASE statement in the APPOINTMENT table to label appointments as 'Critical' 
+-- if the patient has undergone multiple doctor visits.
+SELECT 
+    a.appointment_id,
+    a.doctor_id,
+    a.appointment_date,
+    a.status,
+    a.patient_id,
+    CASE 
+        WHEN visit_count > 1 THEN 'Critical'
+        ELSE 'Normal'
+    END AS appointment_label
+FROM appointment a
+JOIN (
+    SELECT patient_id, COUNT(*) AS visit_count
+    FROM appointment
+    GROUP BY patient_id
+)v ON a.patient_id = v.patient_id;
+
 
 -- 12. EXISTS and NOT EXISTS Command
 -- Select all patients where an appointment exists in the APPOINTMENT table using EXISTS.
