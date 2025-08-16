@@ -1,5 +1,3 @@
--- Question 1: Insert Data into all Tables
--- Write SQL queries to populate each table created in the Chapter 5 assignment with at least 10 rows of data.
 
 -- Question 2: Insert a New Patient
 -- Write a DML SQL statement to insert a new record into the PATIENT table with the following details:

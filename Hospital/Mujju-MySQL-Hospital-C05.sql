@@ -1,11 +1,12 @@
-create database Hospital;
-use hospital;
+-- create database Hospital;
+-- use Hospital;
+
 
 -- Question 1: Create the DEPARTMENT Table with a Foreign Key
 create table if not exists department(
 	department_id int auto_increment primary key
     ,department_name varchar(50) unique not null
-    ,loaction varchar(50) not null
+    ,location varchar(50) not null
     ,created_at datetime default current_timestamp
     ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
@@ -18,6 +19,7 @@ create table if not exists doctor(
     ,last_name varchar(255) not null
     ,specialization varchar(255) not null
     ,email varchar(255) unique not null
+    ,phone_number varchar(255) unique not null
     ,per_visit_cost decimal(10,2) not null
     ,active_flag boolean default 0 not null
     ,login_id varchar(255) not null
@@ -40,6 +42,7 @@ create table if not exists nurse(
     ,first_name varchar(255) not null
     ,last_name varchar(255) not null
     ,email varchar(255) unique not null
+    ,phone_number varchar(255) unique not null
     ,hire_date date not null
     ,active_flag boolean not null
     ,login_id varchar(255) unique not null
@@ -53,8 +56,10 @@ create table if not exists room(
     ,room_number char(3) unique not null
     ,room_type varchar(50) not null check (room_type in ( "General", "ICU", "Private"))
     ,daily_rate decimal(10,2) not null
+    ,department_id int
     ,created_at datetime default current_timestamp
     ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
+    ,foreign key(department_id) references department(department_id)
 );
 
 -- Question 6: Create the PATIENT Table
@@ -91,12 +96,14 @@ create table if not exists APPOINTMENT(
     ,room_id int not null
     ,incharge_nurse_id int not null
     ,admission_id int not null
+    ,patient_id int not null
 	,created_at datetime default current_timestamp
     ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
     ,foreign key(doctor_id) references doctor(doctor_id)
     ,foreign key(room_id) references room(room_id)
     ,foreign key(incharge_nurse_id) references nurse(nurse_id)
     ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
+    ,foreign key(patient_id) references patient(patient_id)
 );
 
 -- Question 9: Create the ROOM_ADMIT Table
@@ -130,6 +137,7 @@ create table if not exists PRESCRIPTION(
     ,prescription_date datetime default current_timestamp not null
     ,medication_id int not null
     ,doctor_id int not null
+    ,patient_id int not null
     ,start_date date not null
     ,end_date date not null
     ,morning_flag boolean not null
@@ -141,6 +149,7 @@ create table if not exists PRESCRIPTION(
     ,foreign key(medication_id) references medication(medication_id)
     ,foreign key(doctor_id) references doctor(doctor_id)
     ,foreign key(admission_id) references PATIENT_ADMISSION(admission_id)
+    ,foreign key(patient_id) references patient(patient_id)
 );
 
 -- Question 12: Create the BILLING Table with Constraints
@@ -178,7 +187,6 @@ create table if not exists USER_LOGIN(
     ,password varchar(255) not null
     ,active_flag char(1) not null check(active_flag in (1,0))
     ,last_login_datetime datetime default current_timestamp
-    ,active boolean default true not null
 	,created_at datetime default current_timestamp
     ,updated_at timestamp default current_timestamp ON UPDATE CURRENT_TIMESTAMP
 );
