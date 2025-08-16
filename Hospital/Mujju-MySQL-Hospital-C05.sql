@@ -1,5 +1,5 @@
--- create database Hospital;
--- use Hospital;
+create database if not exists Hospital;
+use Hospital;
 
 
 -- Question 1: Create the DEPARTMENT Table with a Foreign Key
@@ -36,7 +36,7 @@ create table if not exists DOCTOR_DEPARTMENT(
     ,primary key(doctor_id, department_id)
 );
 
--- Question 4: Create the NURSE Table
+-- Question 4: Create the NURSE Table 
 create table if not exists nurse(
 	nurse_id int auto_increment primary key
     ,first_name varchar(255) not null
