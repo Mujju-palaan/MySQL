@@ -235,13 +235,32 @@ JOIN (
 
 -- 12. EXISTS and NOT EXISTS Command
 -- Select all patients where an appointment exists in the APPOINTMENT table using EXISTS.
+select * from patient a
+where  exists ( select * from APPOINTMENT b
+				where a.patient_id=b.patient_id )
+;
+
 -- Select all doctors where no appointments exist in the APPOINTMENT table using NOT EXISTS.
+select * from doctor
+where not exists (select * from appointment)
+;
 
 -- 13. SUBQUERY Command
 -- Select all doctors whose doctor_id is in the result of a subquery selecting doctor_id from the APPOINTMENT table where status is 'Scheduled'.
+select doctor_id from doctor
+where doctor_id in (select doctor_id from APPOINTMENT
+					where status = 'Scheduled')
+;
+
 -- Select all medications where the medication_id is in the result of a subquery selecting medication_id from the PRESCRIPTION table.
+
+
 -- Select all patients who have not scheduled an appointment using a subquery.
+
+
 -- Select all patient admits where the patient has been admitted more than once using a subquery.
+
+
 
 -- 14. RANK and DENSE_RANK Command
 -- Rank patients based on the number of appointments using RANK().
