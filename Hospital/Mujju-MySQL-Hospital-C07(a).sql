@@ -253,20 +253,35 @@ where doctor_id in (select doctor_id from APPOINTMENT
 ;
 
 -- Select all medications where the medication_id is in the result of a subquery selecting medication_id from the PRESCRIPTION table.
-
+select * from medication
+where medication_id in ( select medication_id from PRESCRIPTION);
 
 -- Select all patients who have not scheduled an appointment using a subquery.
-
+select * from patient
+where patient_id not in (select patient_id from appointment
+							where status = 'Scheduled');
 
 -- Select all patient admits where the patient has been admitted more than once using a subquery.
-
-
+Select * from  patient_admission
+where patient_id in (select patient_id 
+						from patient
+                        group by patient_id
+                        having count(*) > 1
+						);
 
 -- 14. RANK and DENSE_RANK Command
 -- Rank patients based on the number of appointments using RANK().
+
+
 -- Use DENSE_RANK() to rank doctors based on their specialization.
+
+
 -- Rank medications by their dosage using RANK().
+
+
 -- Use DENSE_RANK() to rank treatments by treatment_date.
+
+
 
 -- 15. PIVOT and UNPIVOT
 -- Pivot the APPOINTMENT data by status and patient_id.
