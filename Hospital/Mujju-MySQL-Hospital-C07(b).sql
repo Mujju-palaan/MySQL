@@ -156,25 +156,57 @@ group by log_date;
 -- SQL Query: Retrieve admit counts grouped by month.
 -- X-Axis: Month.
 -- Y-Axis: Number of patient admits.
-
+select 
+	patient_id
+    ,month(treatment_start_date) as month
+    ,count(*)
+from patient_admission
+group by patient_id, month(treatment_start_date)
+;
 
 -- Pie Chart - Doctors by Specialization
 -- SQL Query: Retrieve doctors grouped by their specialization.
 -- Pie Sections: Number of doctors per specialization.
-
+select
+	Specialization
+    ,count(*)
+from doctor
+group by Specialization
+;
 
 -- Line Graph - Doctor Visits by Month
 -- SQL Query: Retrieve doctor appointments conducted per month.
 -- X-Axis: Treatment date grouped by month.
 -- Y-Axis: Number of appointments.
-
+select
+	month(appointment_date)
+    ,count(*)
+from appointment
+group by month(appointment_date)
+;
 
 -- Table - Occupancy Summary
 -- SQL Query: Retrieve patient names and room admit dates.
 -- Columns: Calendar Date, Room Name, Patient Name.
 -- Note: Retrieve data for a specified month across all rooms, including rooms without any patients.
-
+select 
+	monthname(a.created_at)
+    ,b.room_number
+    ,concat(d.first_name,' ',d.last_name)
+    ,count(*)
+from room_admit a
+inner join room b using(room_id)
+inner join patient_admission c using(admission_id)
+inner join patient d using(patient_id)
+group by monthname(a.created_at), b.room_number, concat(d.first_name,' ',d.last_name)
+;
 
 -- Gauge - In Patient VS Out Patient
 -- SQL Query: Count the total number of in patient and out patient admits.
 -- Display: Total patient count.
+select 
+	admit_type
+    ,count(*)
+from patient_admission
+group by admit_type
+;
