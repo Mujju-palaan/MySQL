@@ -271,17 +271,39 @@ where patient_id in (select patient_id
 
 -- 14. RANK and DENSE_RANK Command
 -- Rank patients based on the number of appointments using RANK().
-
+WITH patient_visits AS (
+    SELECT 
+        patient_id,
+        COUNT(appointment_id) AS total_visits
+    FROM appointment
+    GROUP BY patient_id
+)
+SELECT 
+    patient_id,
+    total_visits,
+    RANK() OVER (ORDER BY total_visits DESC) AS visit_rank
+FROM patient_visits
+ORDER BY visit_rank, patient_id;
 
 -- Use DENSE_RANK() to rank doctors based on their specialization.
-
+select concat(first_name,' ',last_name) as doctor_name,
+		specialization,
+		DENSE_RANK() over(order by specialization)
+from doctor;
 
 -- Rank medications by their dosage using RANK().
+select 
+	medication_name
+	,dosage
+    ,rank() over(order by dosage)
+from medication;
 
 
 -- Use DENSE_RANK() to rank treatments by treatment_date.
-
-
+select 
+	treatment_start_date
+    ,rank() over(order by treatment_start_date)
+from patient_admission;
 
 -- 15. PIVOT and UNPIVOT
 -- Pivot the APPOINTMENT data by status and patient_id.
@@ -308,9 +330,16 @@ where patient_id in (select patient_id
 
 -- 19. DATE Functions
 -- Select all patients and show their date_of_birth formatted as 'YYYY-MM-DD' using TO_CHAR().
+
+
 -- Add 1 year to all appointment_date values in the APPOINTMENT table using AGE().
+
+
 -- Subtract 1 month from all treatment_start_date values using INTERVAL.
+select treatment_start_date from patient_admission;
+
 -- Select all nurses and extract the year from their hire_date using EXTRACT().
+
 
 -- 20. NUMERIC Functions
 -- Select the dosage from the MEDICATION table and round it to the nearest integer using ROUND().
@@ -332,9 +361,20 @@ where patient_id in (select patient_id
 
 -- 23. LIKE and NOT LIKE
 -- Select patients whose email ends with 'hospital.com' using LIKE.
+select * from patient
+where email like  '%hospital.com';
+
 -- Select doctors where specialization contains 'Surgery' using LIKE.
+select * from doctor
+where specialization LIKE 'Surgery';
+
 -- Select patients whose last_name does not start with 'J' using NOT LIKE.
+select * from patient
+where last_name NOT LIKE 'J%';
+
 -- Select departments where department_name contains 'Oncology' using LIKE.
+select * from department
+where department_name LIKE 'Oncology';
 
 -- 24. EXISTS and NOT EXISTS
 -- Select doctors where appointments exist in the APPOINTMENT table using EXISTS.
@@ -350,15 +390,38 @@ where patient_id in (select patient_id
 
 -- 26. BETWEEN Command
 -- Select all appointments where the appointment_date is between '2023-01-01' and '2023-12-31'.
+select * from appointment
+where appointment_date between '2023-01-01' and '2023-12-31';
+
 -- Select all treatments where the treatment_date is between '2022-01-01' and '2022-12-31'.
+select * from patient_admission
+where treatment_start_date between '2022-01-01' and '2022-12-31';
+
 -- Select all patients where the date_of_birth is between '1960-01-01' and '2000-12-31'.
+select * from patient
+where date_of_birth between '1960-01-01' and '2000-12-31';
+
 -- Select all rooms where the capacity is between 2 and 10.
+select * from room 
+where room_number between 100 and 500;
+
 
 -- 27. IN and NOT IN Command
 -- Select all patients where the patient_id is in (1, 2, 3).
+select * from patient
+where patient_id in (1, 2, 3);
+
 -- Select all doctors where the specialization is in ('Cardiology', 'Oncology').
+select * from doctor
+where specialization in ('Cardiology', 'Oncology');
+
 -- Select all appointments where the status is not in ('Cancelled', 'No Show').
+select * from appointment
+where status not in ('Cancelled', 'No Show');
+
 -- Select all departments where the department_id is in (1, 2, 5).
+select * from department
+where department_id in (1, 2, 5);
 
 -- 28. UNION Command
 -- Select patients from PATIENT and HOSPITAL_PATIENT using UNION.
