@@ -7,7 +7,7 @@
 
 -- Stored Procedure for Patient Admit Management
 -- Write a stored procedure to update data in PATIENT_ADMIT table.
-
+-- Done
 
 -- Stored Procedure for Doctor Management
 -- Write a stored procedure to select data from DOCTOR table.
