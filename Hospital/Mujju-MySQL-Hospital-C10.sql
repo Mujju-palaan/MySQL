@@ -3,7 +3,7 @@
 
 -- Stored Procedure for Medication Management
 -- Write a stored procedure to insert data into MEDICATION table.
-
+-- Done
 
 -- Stored Procedure for Patient Admit Management
 -- Write a stored procedure to update data in PATIENT_ADMIT table.
