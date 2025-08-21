@@ -11,7 +11,7 @@
 
 -- Stored Procedure for Doctor Management
 -- Write a stored procedure to select data from DOCTOR table.
-
+-- Done
 
 -- Stored Procedure for Prescription Management
 -- Create a stored procedure to display detailed prescription information. If a medicine is prescribed for 3 days, generate rows for each day, and if it is prescribed 3 times a day for 3 days, display 9 rows. Utilize a dim_date table with a JOIN and apply the temporary table technique to represent the morning, afternoon, and evening dosages.
