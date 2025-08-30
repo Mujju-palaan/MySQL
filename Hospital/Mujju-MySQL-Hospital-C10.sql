@@ -54,11 +54,11 @@
 -- Function Tasks:
 -- Function to Calculate Total Bill per Patient
 -- Write a function to calculate the total amount billed to a patient based on the treatments and services provided.
-
+-- Done
 
 -- Function to Calculate Appointment Count per Doctor
 -- Write a function that calculates the number of appointments scheduled for a specific doctor.
-
+-- Done
 
 -- Trigger Task:
 -- Trigger on Appointment Status Change
