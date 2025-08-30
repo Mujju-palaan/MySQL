@@ -32,16 +32,16 @@
 
 -- Stored Procedure for Payment Receipts
 -- Create a stored procedure to insert payment receipt details and automatically update the associated bill status to indicate whether it is fully paid or partially paid.
-
+-- Done
 
 -- View Tasks:
 -- View for Room Information
 -- Create a view to display room details including room id, room name, daily rate and room type.
-
+-- Done
 
 -- View for Appointment Details
 -- Create a view to display appointment details including patient name, doctor name, doctor specialization, appointment date, room name and status.
-
+-- Done
 
 -- View for Monthly Room Occupancy Details
 -- Write a view that lists each room occupancy on daily basis with details such as calendar date, patient name, incharge nurse, and daily billing rate. If a room is unoccupied on a given date, display the room ID without any associated patient information. You need to JOIN date dim table with room admit table. LEFT JOIN plays crucial role in this solution.
