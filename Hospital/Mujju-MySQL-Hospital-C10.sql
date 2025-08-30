@@ -1,5 +1,6 @@
 -- Assignment Tasks:
 -- Stored Procedure Tasks:
+-- use hospital
 
 -- Stored Procedure for Medication Management
 -- Write a stored procedure to insert data into MEDICATION table.
@@ -15,19 +16,19 @@
 
 -- Stored Procedure for Prescription Management
 -- Create a stored procedure to display detailed prescription information. If a medicine is prescribed for 3 days, generate rows for each day, and if it is prescribed 3 times a day for 3 days, display 9 rows. Utilize a dim_date table with a JOIN and apply the temporary table technique to represent the morning, afternoon, and evening dosages.
-
+-- Done
 
 -- Stored Procedure for Billing Information
 -- Create a stored procedure to display detailed billing information for a specified patient. The output should include treatment details, patient data, billing data, and payment information. Mark a record as overdue if the total amount remains unpaid for more than 3 days after the bill creation date. If a single bill has multiple payments, present the receipt IDs as a comma-separated list.
-
+-- Done
 
 -- Stored Procedure for New Appointments
 -- Create a stored procedure to insert patient appointment details while ensuring that the assigned doctor or room is not double-booked. Additionally, automatically generate a billing record based on the doctor's per-visit fee.
-
+-- Done
 
 -- Stored Procedure for New Room Admits
 -- Create a stored procedure to insert room admit details while ensuring that the assigned room is not double-booked. Additionally, automatically generate a billing record based on the room's per-day fee.
-
+-- Done
 
 -- Stored Procedure for Payment Receipts
 -- Create a stored procedure to insert payment receipt details and automatically update the associated bill status to indicate whether it is fully paid or partially paid.
