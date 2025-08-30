@@ -45,11 +45,11 @@
 
 -- View for Monthly Room Occupancy Details
 -- Write a view that lists each room occupancy on daily basis with details such as calendar date, patient name, incharge nurse, and daily billing rate. If a room is unoccupied on a given date, display the room ID without any associated patient information. You need to JOIN date dim table with room admit table. LEFT JOIN plays crucial role in this solution.
-
+-- Done
 
 -- View for Patient Discharge Billing Information
 -- Create a view to display treatment billing information, including treatment description, bill date, bill amount, paid amount, pay receipt id, and balance amount. If multiple payments have been made for a single bill, display the receipt IDs as a comma-separated list. There shall be one record per bill, repeating treatment information is ok.
-
+-- Done
 
 -- Function Tasks:
 -- Function to Calculate Total Bill per Patient
