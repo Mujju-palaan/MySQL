@@ -1,7 +1,7 @@
 -- Store DDL(Data Definition Language) ASSIGNMENT
 -- Mujju-postgres-Store-Chapter05-ddl
-create database Store_management_system;
-use Store_management_system;
+-- create database Store_management_system;
+-- use Store_management_system;
 
 -- Question 1: Create the CITY Table with Constraints
 create table city(
