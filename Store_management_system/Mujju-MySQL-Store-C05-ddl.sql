@@ -104,6 +104,7 @@ create table orders(
 	,foreign key (store_id) references store(store_id)  ON DELETE CASCADE
 	,created_at datetime default current_timestamp not null
 	,updated_at datetime default current_timestamp not null
+    -- check (order_status in ('Accepted','Packing','Ready for Delivery','Shipping','Delivered','Paid','Closed')
 );
 -- -added check (order_status in ('Accepted','Packing','Ready for Delivery','Shipping','Delivered','Paid','Closed'))
 
@@ -240,14 +241,14 @@ drop table store_policy;
 -- Question 24: Alter the STORE Table to Add a Foreign Key
 -- Write a SQL statement to add a city_id column to STORE Table along with foreign key referencing the CITY table.
 -- select * from store;
--- alter table store add column city_id int references city(city_id)  ON DELETE CASCADE;
+alter table store add column city_id int references city(city_id)  ON DELETE CASCADE;
 
 -- Question 25: Add a Foreign Key to the INVENTORY Table
 -- Add a foreign key in the INVENTORY table to reference the SUPPLIER table.
 -- select * from inventory;
 -- select * from supplier;
--- alter table inventory add column supplier_id int not null;
--- alter table inventory ADD CONSTRAINT fk foreign key (supplier_id) references supplier(supplier_id)  ON DELETE CASCADE;
+alter table inventory add column supplier_id int not null;
+alter table inventory ADD CONSTRAINT fk foreign key (supplier_id) references supplier(supplier_id)  ON DELETE CASCADE;
 
 -- Question 26: Drop a Foreign Key on the EMPLOYEE Table
 -- Remove the foreign key in the EMPLOYEE table that references the STORE table.
@@ -258,7 +259,7 @@ drop table store_policy;
 -- WHERE table_name = 'employee' AND constraint_type = 'FOREIGN KEY';
 -- -employee_store_id_fkey
 
-alter table employee drop constraint employee_store_id_fkey;
+-- alter table employee drop constraint employee_store_id_fkey;
 
 -- Question 27: Add a CHECK Constraint on the ORDER_PRODUCT Table
 -- Write a SQL statement to add a CHECK constraint to the ORDER_PRODUCT table ensuring that the units is greater than 0.
@@ -291,7 +292,7 @@ SET DEFAULT 0;
 -- Question 31: Add a default Constraint on the EMPLOYEE Table
 -- Write a SQL statement to add a current system timestamp DEFAULT constraint to the EMPLOYEE table on created_at column.
 -- select * from employee;
-alter table employee alter column created_at set default Current_timestamp;
+-- alter table employee alter column created_at set default Current_timestamp;
 
 -- Question 32: Add Indexes to the PRODUCT and CUSTOMER Tables
 -- Write SQL statements to:
@@ -303,7 +304,7 @@ create index idx_last_name on CUSTOMER(last_name);
 
 -- Question 33: Drop a INDEX on the CUSTOMER Table
 -- Write a SQL statement to drop the index on the last_name column in the CUSTOMER table.
-drop index idx_last_name;
+drop index idx_last_name ON CUSTOMER;
 
 -- Question 34: Enforce UNIQUE constraints on all applicable tables.
 -- Apply UNIQUE constraints to columns across the entire database wherever duplicate data is not permitted.
