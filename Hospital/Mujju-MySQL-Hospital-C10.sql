@@ -62,4 +62,5 @@
 
 -- Trigger Task:
 -- Trigger on Appointment Status Change
--- Create a trigger on the APPOINTMENT table that logs changes to the status field into the AUDIT_LOG table. Capture the appointment_id, old_status, new_status, log_date, and user_id.
+-- Create a trigger on the APPOINTMENT table that logs changes to the status field into the AUDIT_LOG table. 
+-- Capture the appointment_id, old_status, new_status, log_date, and user_id.
