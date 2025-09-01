@@ -17,7 +17,7 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- 3)Stored Procedure for Product Management
 -- Create a stored procedure to update product information for the Product Management screen.
-	
+-- Done
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- 4)Stored Procedure for Order Management
