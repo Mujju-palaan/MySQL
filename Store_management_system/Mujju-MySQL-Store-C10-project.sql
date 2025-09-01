@@ -7,12 +7,12 @@
 -- 1)Stored Procedure for Product Management Data Grid
 -- Write a stored procedure to retrieve all product details for the Product Management screen,
 -- including product_name, price, and quantity_in_stock.
-
+-- Done
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- 2)Stored Procedure for Customer Management
 -- Create a stored procedure to insert customer information for the Customer Management screen.
-
+-- Done
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- 3)Stored Procedure for Product Management
